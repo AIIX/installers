@@ -33,7 +33,7 @@ echo "The compiling can take a long time."
 echo "Go enjoy a movie, we'll finish the install.       "
 echo "*****************************************************"
 
-./dev_setup.sh
+pkexec ./dev_setup.sh
 
 echo "-----------------------------------------------------"
 echo "Whew, finally finished that!  Now on to the Plasmoid "
