@@ -58,7 +58,7 @@ cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release -DKDE_INSTALL_LI
 make
 
 # Install the Plasmoid
-pkexec make install
+sudo make install
 
 # Set permissions on new files to allow execution
 pkexec /tmp/installers/setpermissions.sh
