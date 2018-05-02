@@ -2,7 +2,7 @@
 
 getuser=$(who am i | awk '{print $1}')
 echo $getuser
-cd /home/$getuser/
+cd ~
 # Build the Plasmoid
 cd plasma-mycroft
 mkdir build
@@ -11,7 +11,7 @@ cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release -DKDE_INSTALL_LI
 make
 
 # Install the Plasmoid
-sudo make install
+make install
 
 # Set permissions on new files to allow execution
 pkexec /tmp/installers/setpermissions.sh
