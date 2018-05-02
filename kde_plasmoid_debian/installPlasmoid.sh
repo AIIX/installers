@@ -1,4 +1,5 @@
 #!/bin/bash
+set -Ee
 
 getuser=$(who am i | awk '{print $1}')
 echo $getuser
