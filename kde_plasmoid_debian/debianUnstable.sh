@@ -1,0 +1,3 @@
+#!/bin/bash
+
+sudo apt-get install -y git python-dev python-setuptools python-virtualenv python-gobject-2-dev virtualenvwrapper libtool libffi-dev libssl-dev autoconf bison swig libglib2.0-dev portaudio19-dev mpg123 screen flac curl libicu-dev pkg-config automake libjpeg-dev libfann-dev build-essential jq
