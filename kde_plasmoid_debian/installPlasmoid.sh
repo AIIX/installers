@@ -1,6 +1,8 @@
 #!/bin/bash
 
-cd ~
+getuser=$(who am i | awk '{print $1}')
+echo $getuser
+cd /home/$getuser/
 # Build the Plasmoid
 cd plasma-mycroft
 mkdir build
