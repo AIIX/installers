@@ -1,7 +1,7 @@
 #!/bin/bash
 set -Ee
 getUsr=$(pstree -lu -s $$ | grep --max-count=1 -o '([^)]*)' | head -n 1)
-echo getUsr
+echo $getUsr
 # Build the Plasmoid
 cd ~
 cd plasma-mycroft
