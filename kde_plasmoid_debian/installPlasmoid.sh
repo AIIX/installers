@@ -4,7 +4,7 @@ getuser=$(who am i | awk '{print $1}')
 echo $getuser
 
 # Build the Plasmoid
-cd /home/root/plasma-mycroft
+cd /home/$getuser/plasma-mycroft
 mkdir build
 cd build
 cmake .. -DCMAKE_INSTALL_PREFIX=/usr -DCMAKE_BUILD_TYPE=Release -DKDE_INSTALL_LIBDIR=lib -DKDE_INSTALL_USE_QT_SYS_PATHS=ON
