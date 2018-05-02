@@ -2,7 +2,7 @@
 
 getuser=$(who am i | awk '{print $1}')
 echo $getuser
-cd ~
+
 # Build the Plasmoid
 cd plasma-mycroft
 mkdir build
