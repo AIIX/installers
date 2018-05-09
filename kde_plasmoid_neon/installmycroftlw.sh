@@ -89,19 +89,19 @@ install_deps() {
 echo "Do Nothing Installer Will Handle System Deps"
 }
 
+TOP=$(cd $(dirname $0) && pwd -L)
+VIRTUALENV_ROOT=${VIRTUALENV_ROOT:-"${TOP}/.venv"}
+
+install_venv() {
+    python3 -m venv "${VIRTUALENV_ROOT}/" --without-pip
+    curl https://bootstrap.pypa.io/get-pip.py | "${VIRTUALENV_ROOT}/bin/python"
+}
+
 install_deps
 
 # Configure to use the standard commit template for
 # this repo only.
 git config commit.template .gitmessage
-
-TOP=$(cd $(dirname $0) && pwd -L)
-
-if [ -z "$WORKON_HOME" ]; then
-    VIRTUALENV_ROOT=${VIRTUALENV_ROOT:-"${HOME}/.virtualenvs/mycroft"}
-else
-    VIRTUALENV_ROOT="$WORKON_HOME/mycroft"
-fi
 
 # Check whether to build mimic (it takes a really long time!)
 build_mimic='y'
@@ -127,20 +127,22 @@ else
   fi
 fi
 
-# create virtualenv, consistent with virtualenv-wrapper conventions
-if [ ! -d "${VIRTUALENV_ROOT}" ]; then
-   mkdir -p $(dirname "${VIRTUALENV_ROOT}")
-  virtualenv -p python2.7 "${VIRTUALENV_ROOT}"
+if [ ! -x "${VIRTUALENV_ROOT}/bin/activate" ]; then
+  install_venv
 fi
+
+# Start the virtual environment
 source "${VIRTUALENV_ROOT}/bin/activate"
 cd "${TOP}"
+
 easy_install pip==9.0.1 # force version of pip
-pip install --upgrade virtualenv
+
+PYTHON=$( python -c "import sys;print('python{}.{}'.format(sys.version_info[0], sys.version_info[1]))" )
 
 # Add mycroft-core to the virtualenv path
 # (This is equivalent to typing 'add2virtualenv $TOP', except
 # you can't invoke that shell function from inside a script)
-VENV_PATH_FILE="${VIRTUALENV_ROOT}/lib/python2.7/site-packages/_virtualenv_path_extensions.pth"
+VENV_PATH_FILE="${VIRTUALENV_ROOT}/lib/$PYTHON/site-packages/_virtualenv_path_extensions.pth"
 if [ ! -f "$VENV_PATH_FILE" ] ; then
     echo "import sys; sys.__plen = len(sys.path)" > "$VENV_PATH_FILE" || return 1
     echo "import sys; new=sys.path[sys.__plen:]; del sys.path[sys.__plen:]; p=getattr(sys,'__egginsert',0); sys.path[p:p]=new; sys.__egginsert = p+len(new)" >> "$VENV_PATH_FILE" || return 1
@@ -153,9 +155,7 @@ if ! grep -q "$TOP" $VENV_PATH_FILE; then
 ' "${VENV_PATH_FILE}"
 fi
 
-# install requirements (except pocketsphinx)
-# removing the pip2 explicit usage here for consistency with the above use.
-
+# install required python modules
 if ! pip install -r requirements.txt; then
     echo "Warning: Failed to install all requirements. Continue? y/N"
     read -n1 continue
@@ -186,11 +186,9 @@ else
   echo "Skipping mimic build."
 fi
 
-# install pygtk for desktop_launcher skill
-"${TOP}/scripts/install-pygtk.sh" " ${CORES}"
-
 # set permissions for common scripts
 chmod +x start-mycroft.sh
 chmod +x stop-mycroft.sh
 
+#Store a fingerprint of setup
 md5sum requirements.txt dev_setup.sh > .installed
