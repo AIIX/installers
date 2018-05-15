@@ -13,4 +13,16 @@ make
 sudo make install
 
 # Set permissions on new files to allow execution
-pkexec /tmp/installers/setpermissions.sh
+sudo chmod +x /usr/share/plasma/plasmoids/org.kde.plasma.mycroftplasmoid/contents/code/startservice.sh
+sudo chmod +x /usr/share/plasma/plasmoids/org.kde.plasma.mycroftplasmoid/contents/code/stopservice.sh
+sudo chmod +x /usr/share/plasma/plasmoids/org.kde.plasma.mycroftplasmoid/contents/code/pkgstartservice.sh
+sudo chmod +x /usr/share/plasma/plasmoids/org.kde.plasma.mycroftplasmoid/contents/code/pkgstopservice.sh
+
+# Fix First Startup
+mycroft_root_dir='/opt/mycroft'
+skills_dir="${mycroft_root_dir}"/skills
+
+if [ ! -d ${skills_dir} ]; then
+    sudo mkdir -p ${skills_dir}
+    sudo chown -Rvf ${getUsr}:${getUsr} ${mycroft_root_dir}
+fi
