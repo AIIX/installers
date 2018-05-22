@@ -157,11 +157,7 @@ fi
 
 # install required python modules
 if ! pip install -r requirements.txt; then
-    echo "Warning: Failed to install all requirements. Continue? y/N"
-    read -n1 continue
-    if [[ "$continue" != "y" ]] ; then
-        exit 1
-    fi
+    echo "Warning: Failed to install all requirements. Manually install all dependencies in requirements.txt after the install"
 fi
 
 SYSMEM=$(free|awk '/^Mem:/{print $2}')
