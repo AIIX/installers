@@ -12,12 +12,6 @@ make
 # Install the Plasmoid
 sudo make install
 
-# Set permissions on new files to allow execution
-sudo chmod +x /usr/share/plasma/plasmoids/org.kde.plasma.mycroftplasmoid/contents/code/startservice.sh
-sudo chmod +x /usr/share/plasma/plasmoids/org.kde.plasma.mycroftplasmoid/contents/code/stopservice.sh
-sudo chmod +x /usr/share/plasma/plasmoids/org.kde.plasma.mycroftplasmoid/contents/code/pkgstartservice.sh
-sudo chmod +x /usr/share/plasma/plasmoids/org.kde.plasma.mycroftplasmoid/contents/code/pkgstopservice.sh
-
 # Fix First Startup
 mycroft_root_dir='/opt/mycroft'
 skills_dir="${mycroft_root_dir}"/skills
